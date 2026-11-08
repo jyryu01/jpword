@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>JP Beginner Practice</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --panel: #ffffff;
+        --primary: #ff6f61;
+        --primary-soft: #ffe4df;
+        --accent: #2a7de1;
+        --accent-soft: #eaf2ff;
+        --success: #1da574;
+        --text: #1e293b;
+        --muted: #64748b;
+        --shadow: 0 10px 30px rgba(30, 41, 59, 0.08);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+        background: linear-gradient(180deg, #eef7ff 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 18px 12px 28px;
+      }
+
+      .phone {
+        width: min(100%, 430px);
+        min-height: calc(100vh - 36px);
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(148,163,184,0.2);
+        backdrop-filter: blur(12px);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        padding: 20px 18px 12px;
+        background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+        border-bottom: 1px solid rgba(148,163,184,0.15);
+      }
+
+      .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      .signal {
+        display: flex;
+        gap: 4px;
+        align-items: end;
+      }
+
+      .signal span {
+        display: block;
+        width: 4px;
+        border-radius: 4px;
+        background: var(--success);
+      }
+
+      .signal span:nth-child(1) { height: 5px; }
+      .signal span:nth-child(2) { height: 8px; }
+      .signal span:nth-child(3) { height: 12px; }
+      .signal span:nth-child(4) { height: 16px; }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .badge {
+        background: var(--primary-soft);
+        color: var(--primary);
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 12px 14px 0;
+      }
+
+      .tab {
+        appearance: none;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        font-weight: 700;
+        padding: 12px 8px;
+        border-radius: 14px;
+        font-size: 0.9rem;
+        transition: 0.2s ease;
+      }
+
+      .tab.active {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .content {
+        flex: 1;
+        overflow: auto;
+        padding: 16px 14px 90px;
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, var(--primary) 0%, #ff8a65 100%);
+        color: white;
+        border-radius: var(--radius);
+        padding: 18px 16px;
+        box-shadow: var(--shadow);
+        margin-bottom: 16px;
+      }
+
+      .hero h2 {
+        margin: 0 0 6px;
+        font-size: 1.2rem;
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 0.85rem;
+        opacity: 0.95;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat {
+        background: var(--panel);
+        border-radius: 18px;
+        padding: 12px 10px;
+        text-align: center;
+        box-shadow: 0 8px 22px rgba(148,163,184,0.08);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.72rem;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0 12px;
+      }
+
+      .section-title h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .chip {
+        background: var(--panel);
+        border: 1px solid rgba(148,163,184,0.18);
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      .word-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .word-card {
+        background: var(--panel);
+        border-radius: 18px;
+        padding: 12px 12px 10px;
+        box-shadow: 0 8px 22px rgba(148,163,184,0.08);
+      }
+
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .word-title-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .japanese {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .japanese strong {
+        font-size: 1.2rem;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+
+      .small-btn {
+        border: none;
+        background: linear-gradient(135deg, var(--accent-soft) 0%, #dfeeff 100%);
+        color: var(--accent);
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 0 1px rgba(42,125,225,0.08);
+        flex-shrink: 0;
+      }
+
+      .kana {
+        display: block;
+        color: var(--muted);
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        margin-top: 2px;
+      }
+
+      .romaji {
+        color: var(--muted);
+        font-size: 0.68rem;
+      }
+
+      .meta {
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 999px;
+        padding: 4px 7px;
+        font-size: 0.66rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .meaning {
+        font-size: 0.95rem;
+        margin: 10px 0 6px;
+      }
+
+      .example-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .example {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .example-text {
+        flex: 1;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.6;
+      }
+
+      .example-text ruby {
+        ruby-position: over;
+      }
+
+      .example-text rt {
+        font-size: 0.58em;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .example-translation {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      .example-btn {
+        border: none;
+        background: rgba(42,125,225,0.08);
+        color: var(--accent);
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      .favorite {
+        border: none;
+        background: transparent;
+        font-size: 1rem;
+        padding: 4px 6px;
+        opacity: 0.8;
+      }
+
+      .quiz-card {
+        background: var(--panel);
+        border-radius: 20px;
+        padding: 16px;
+        box-shadow: 0 8px 26px rgba(148,163,184,0.08);
+        margin-bottom: 14px;
+      }
+
+      .quiz-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      .quiz-prompt {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .option-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .option {
+        width: 100%;
+        border: 1px solid rgba(148,163,184,0.25);
+        background: #f8fbff;
+        border-radius: 14px;
+        padding: 12px 10px;
+        font-size: 0.95rem;
+        text-align: left;
+        color: var(--text);
+      }
+
+      .option.correct {
+        background: rgba(29, 165, 116, 0.1);
+        border-color: rgba(29,165,116,0.35);
+        color: #0d6f52;
+      }
+
+      .option.wrong {
+        background: rgba(255,111,97,0.08);
+        border-color: rgba(255,111,97,0.3);
+        color: #b94c41;
+      }
+
+      .quiz-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .primary-btn, .secondary-btn {
+        flex: 1;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      .primary-btn {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .secondary-btn {
+        background: #edf2ff;
+        color: var(--accent);
+      }
+
+      .topics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .topic-btn {
+        border: 1px solid rgba(148,163,184,0.25);
+        background: white;
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+      }
+
+      .topic-btn.active {
+        background: var(--primary-soft);
+        border-color: rgba(255,111,97,0.28);
+        color: var(--primary);
+      }
+
+      .chat-box {
+        background: var(--panel);
+        border-radius: 22px;
+        padding: 14px;
+        box-shadow: 0 8px 26px rgba(148,163,184,0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .bubble {
+        max-width: 80%;
+        padding: 10px 12px;
+        border-radius: 16px;
+        font-size: 0.91rem;
+        line-height: 1.5;
+      }
+
+      .bubble.ai {
+        align-self: flex-start;
+        background: #eef5ff;
+        color: var(--text);
+        border-bottom-left-radius: 6px;
+      }
+
+      .bubble.user {
+        align-self: flex-end;
+        background: var(--primary-soft);
+        color: var(--text);
+        border-bottom-right-radius: 6px;
+      }
+
+      .chat-line {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .chat-text {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .ja-line {
+        display: block;
+        line-height: 1.6;
+      }
+
+      .ja-kana {
+        display: block;
+        margin-top: 2px;
+        font-size: 0.68rem;
+        line-height: 1.4;
+        color: rgba(30, 41, 59, 0.7);
+        letter-spacing: 0.04em;
+      }
+
+      .speak-btn {
+        border: none;
+        background: rgba(42,125,225,0.08);
+        color: var(--accent);
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .conversation-input {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .conversation-input input {
+        flex: 1;
+        border: 1px solid rgba(148,163,184,0.22);
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        background: white;
+      }
+
+      .conversation-input button {
+        border: none;
+        background: var(--accent);
+        color: white;
+        border-radius: 14px;
+        padding: 0 16px;
+        font-weight: 700;
+      }
+
+      .page-nav {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 16px;
+        padding: 0 2px;
+      }
+
+      #vocab-panel .page-nav {
+        display: flex;
+      }
+
+      .page-btn {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-weight: 700;
+        font-size: 0.82rem;
+        background: #edf2ff;
+        color: var(--accent);
+      }
+
+      .page-btn:disabled {
+        opacity: 0.45;
+      }
+
+      .page-indicator {
+        font-size: 0.8rem;
+        color: var(--muted);
+        min-width: 70px;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .conversation-page-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 12px;
+        padding: 0 2px;
+      }
+
+      .conversation-page-btn {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-weight: 700;
+        font-size: 0.82rem;
+        background: #edf2ff;
+        color: var(--accent);
+      }
+
+      .conversation-page-btn:disabled {
+        opacity: 0.45;
+      }
+
+      .conversation-page-indicator {
+        font-size: 0.8rem;
+        color: var(--muted);
+        min-width: 70px;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .bottom-nav {
+        position: sticky;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px 14px 14px;
+        background: rgba(255,255,255,0.78);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(148,163,184,0.16);
+      }
+
+      .nav-btn {
+        border: none;
+        background: #eef5ff;
+        color: var(--muted);
+        border-radius: 14px;
+        padding: 10px 8px;
+        font-weight: 700;
+      }
+
+      .nav-btn.active {
+        background: var(--primary);
+        color: white;
+      }
+
+      @media (max-width: 360px) {
+        .phone {
+          border-radius: 20px;
+        }
+
+        .brand h1 {
+          font-size: 1.2rem;
+        }
+
+        .stats {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone">
+      <header class="topbar">
+        <div class="status-row">
+          <span>9:41</span>
+          <div class="signal" aria-label="signal strength">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <div class="brand">
+          <h1>JP Learn</h1>
+          <div class="badge">LEVEL 1</div>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="practice menu">
+        <button class="tab active" data-panel="vocab-panel">단어</button>
+        <button class="tab" data-panel="dialogue-panel">회화</button>
+      </nav>
+
+      <main class="content">
+        <section id="vocab-panel" class="panel active">
+          <div class="hero">
+            <h2>오늘의 일본어 기본</h2>
+            <p>짧게, 자주, 쉽게 연습해보세요.</p>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong id="learnedCount">0</strong>
+              <span>배운 단어</span>
+            </div>
+            <div class="stat">
+              <strong>12</strong>
+              <span>오늘 목표</span>
+            </div>
+            <div class="stat">
+              <strong>89%</strong>
+              <span>복습률</span>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <h3>추천 단어</h3>
+            <span class="chip">초급</span>
+          </div>
+
+          <div id="wordList" class="word-list"></div>
+
+          <div class="page-nav" aria-label="단어 페이지 이동">
+            <button id="prevPageBtn" class="page-btn" type="button">이전</button>
+            <span id="pageIndicator" class="page-indicator">1 / 1</span>
+            <button id="nextPageBtn" class="page-btn" type="button">다음</button>
+          </div>
+        </section>
+
+        <section id="dialogue-panel" class="panel">
+          <div class="section-title">
+            <h3>회화 주제</h3>
+            <span class="chip">실전</span>
+          </div>
+
+          <div id="topicList" class="topics"></div>
+
+          <div class="chat-box" id="chatBox"></div>
+
+          <div class="conversation-page-nav" aria-label="회화 문장 페이지 이동">
+            <button id="conversationPrevBtn" class="conversation-page-btn" type="button">이전</button>
+            <span id="conversationPageIndicator" class="conversation-page-indicator">1 / 1</span>
+            <button id="conversationNextBtn" class="conversation-page-btn" type="button">다음</button>
+          </div>
+
+          <div class="conversation-input">
+            <input id="userInput" type="text" placeholder="예시: 안녕하세요!" aria-label="회화 연습 입력" />
+            <button id="sendBtn">전송</button>
+          </div>
+        </section>
+      </main>
+
+      <div class="bottom-nav" aria-label="bottom navigation">
+        <button class="nav-btn active" data-panel="vocab-panel">단어</button>
+        <button class="nav-btn" data-panel="dialogue-panel">회화</button>
+      </div>
+    </div>
+
+    <script>
+      const baseVocabulary = [
+        { word: 'こんにちは', meaning: '안녕하세요', romaji: 'konnichiwa', example: 'こんにちは、今日はいい天気ですね。', example2: '今日は会えてうれしいです。', exampleKo: '안녕하세요, 오늘 날씨가 좋네요.', exampleKo2: '오늘 만나서 기뻐요.', category: '인사' },
+        { word: 'ありがとう', meaning: '감사합니다', romaji: 'arigatou', example: 'ありがとう、助けてくれて。', example2: 'いつも助けてくれてありがとう。', exampleKo: '고마워, 도와줘서.', exampleKo2: '항상 도와줘서 고마워.', category: '감사' },
+        { word: 'すみません', meaning: '실례합니다 / 죄송합니다', romaji: 'sumimasen', example: 'すみません、駅はどこですか？', example2: 'すみません、少し見せてください。', exampleKo: '실례합니다, 역이 어디인가요?', exampleKo2: '죄송합니다, 잠깐 보여주세요.', category: '표현' },
+        { word: 'おはようございます', meaning: '좋은 아침입니다', romaji: 'ohayou gozaimasu', example: 'おはようございます！今日も頑張りましょう。', example2: 'おはようございます、早起きできてよかったです。', exampleKo: '좋은 아침입니다! 오늘도 힘내요.', exampleKo2: '좋은 아침입니다, 일찍 일어나서 다행이었어요.', category: '인사' },
+        { word: '食べる', meaning: '먹다', romaji: 'taberu', example: '朝ごはんを食べます。', example2: '昼ごはんを食べてから仕事に行きます。', exampleKo: '아침밥을 먹습니다.', exampleKo2: '점심을 먹고 나서 일하러 갑니다.', category: '동사' },
+        { word: '水', meaning: '물', romaji: 'mizu', example: '水を一杯ください。', exampleKo: '물을 한 잔 주세요.', category: '명사' },
+        { word: '駅', meaning: '역', romaji: 'eki', example: '駅で友達を待っています。', exampleKo: '역에서 친구를 기다리고 있습니다.', category: '장소' },
+        { word: '行きます', meaning: '가다', romaji: 'ikimasu', example: '学校に行きます。', exampleKo: '학교에 갑니다.', category: '동사' },
+        { word: '大丈夫', meaning: '괜찮다 / 문제없다', romaji: 'daijoubu', example: '大丈夫です、心配しないでください。', exampleKo: '괜찮아요, 걱정하지 마세요.', category: '표현' },
+        { word: '明日', meaning: '내일', romaji: 'ashita', example: '明日、友達と映画を見ます。', exampleKo: '내일 친구와 영화를 봅니다.', category: '시간' },
+        { word: '家', meaning: '집', romaji: 'ie', example: '家でゆっくり休みます。', exampleKo: '집에서 편안히 쉴 거예요.', category: '장소' },
+        { word: '会社', meaning: '회사', romaji: 'kaisha', example: '会社に行くのが少し遅れました。', exampleKo: '회사에 가는 게 조금 늦었습니다.', category: '일상' },
+        { word: '人', meaning: '사람', romaji: 'hito', example: 'この人はとても親切です。', exampleKo: '이 분은 매우 친절하세요.', category: '명사' },
+        { word: '時間', meaning: '시간', romaji: 'jikan', example: '時間がありません。', exampleKo: '시간이 없습니다.', category: '시간' },
+        { word: '買う', meaning: '사다', romaji: 'kau', example: 'スーパーでパンを買います。', exampleKo: '슈퍼에서 빵을 삽니다.', category: '동사' },
+        { word: '休み', meaning: '휴식, 쉬는 날', romaji: 'yasumi', example: '明日は休みです。', exampleKo: '내일은 쉬는 날입니다.', category: '시간' },
+        { word: '歩く', meaning: '걷다', romaji: 'aruku', example: '公園を歩いています。', exampleKo: '공원을 걷고 있습니다.', category: '동사' },
+        { word: '電話', meaning: '전화', romaji: 'denwa', example: '友達に電話します。', exampleKo: '친구에게 전화를 합니다.', category: '생활' },
+        { word: '雨', meaning: '비', romaji: 'ame', example: '今日は雨が降っています。', exampleKo: '오늘은 비가 내리고 있습니다.', category: '날씨' },
+        { word: '朝', meaning: '아침', romaji: 'asa', example: '朝ごはんを食べました。', exampleKo: '아침밥을 먹었습니다.', category: '시간' },
+        { word: '夜', meaning: '밤', romaji: 'yoru', example: '夜まで仕事をします。', exampleKo: '밤까지 일을 합니다.', category: '시간' },
+        { word: '好き', meaning: '좋아하다', romaji: 'suki', example: '日本語が好きです。', exampleKo: '일본어를 좋아합니다.', category: '감정' },
+        { word: '嫌い', meaning: '싫어하다', romaji: 'kirai', example: '野菜はあまり好きじゃないです。', exampleKo: '야채는 별로 싫어해요.', category: '감정' },
+        { word: '話す', meaning: '말하다', romaji: 'hanasu', example: '日本語で話します。', exampleKo: '일본어로 말합니다.', category: '동사' },
+        { word: '聞く', meaning: '듣다 / 묻다', romaji: 'kiku', example: '先生の話を聞いています。', exampleKo: '선생님의 말씀을 듣고 있습니다.', category: '동사' },
+        { word: '料理', meaning: '요리', romaji: 'ryouri', example: 'お母さんが料理を作ります。', exampleKo: '엄마가 요리를 만듭니다.', category: '생활' },
+        { word: '病院', meaning: '병원', romaji: 'byouin', example: '病院に行かなければなりません。', exampleKo: '병원에 가야 합니다.', category: '장소' },
+        { word: '駅前', meaning: '역 앞', romaji: 'ekimae', example: '駅前で待っています。', exampleKo: '역 앞에서 기다리고 있습니다.', category: '장소' },
+        { word: '便利', meaning: '편리하다', romaji: 'benri', example: 'このアプリはとても便利です。', exampleKo: '이 앱은 매우 편리합니다.', category: '표현' },
+        { word: '早い', meaning: '빠르다 / 이르다', romaji: 'hayai', example: '今日は早く起きました。', exampleKo: '오늘은 일찍 일어났습니다.', category: '표현' },
+        { word: '学校', meaning: '학교', romaji: 'gakkou', example: '学校で勉強します。', exampleKo: '학교에서 공부합니다.', category: '장소' },
+        { word: '友達', meaning: '친구', romaji: 'tomodachi', example: '友達と映画を見ました。', exampleKo: '친구와 영화를 봤습니다.', category: '인간관계' },
+        { word: '食事', meaning: '식사', romaji: 'shokuji', example: '食事の時間です。', exampleKo: '식사 시간입니다.', category: '생활' },
+        { word: '店', meaning: '가게', romaji: 'mise', example: '近くの店で買いました。', exampleKo: '근처 가게에서 샀습니다.', category: '장소' },
+        { word: '公園', meaning: '공원', romaji: 'kouen', example: '公園で散歩します。', exampleKo: '공원에서 산책합니다.', category: '장소' },
+        { word: '駅', meaning: '역', romaji: 'eki', example: '駅で切符を買いました。', exampleKo: '역에서 표를 샀습니다.', category: '장소' },
+        { word: '電車', meaning: '전차, 기차', romaji: 'densha', example: '電車が遅れています。', exampleKo: '전차가 늦고 있습니다.', category: '교통' },
+        { word: '車', meaning: '차', romaji: 'kuruma', example: '車で学校に行きます。', exampleKo: '차로 학교에 갑니다.', category: '교통' },
+        { word: '自転車', meaning: '자전거', romaji: 'jitensha', example: '自転車で公園に行きます。', exampleKo: '자전거로 공원에 갑니다.', category: '교통' },
+        { word: '週末', meaning: '주말', romaji: 'shuumatsu', example: '週末に家族と会います。', exampleKo: '주말에 가족과 만납니다.', category: '시간' },
+        { word: '月', meaning: '달, 월', romaji: 'tsuki', example: '月がきれいです。', exampleKo: '달이 예쁘다.', category: '자연' },
+        { word: '日', meaning: '날, 일', romaji: 'hi', example: '今日はいい日です。', exampleKo: '오늘은 좋은 날입니다.', category: '시간' },
+        { word: '娘', meaning: '딸', romaji: 'musume', example: '娘が学校に行きました。', exampleKo: '딸이 학교에 갔습니다.', category: '가족' },
+        { word: '息子', meaning: '아들', romaji: 'musuko', example: '息子は成長しています。', exampleKo: '아들은 성장하고 있습니다.', category: '가족' },
+        { word: '父', meaning: '아버지', romaji: 'chichi', example: '父は早く起きます。', exampleKo: '아버지는 일찍 일어납니다.', category: '가족' },
+        { word: '母', meaning: '어머니', romaji: 'haha', example: '母は料理が上手です。', exampleKo: '어머니는 요리가 잘합니다.', category: '가족' },
+        { word: '兄', meaning: '형, 오빠', romaji: 'ani', example: '兄と話しました。', exampleKo: '형과 이야기를 했습니다.', category: '가족' },
+        { word: '姉', meaning: '누나, 언니', romaji: 'ane', example: '姉は優しいです。', exampleKo: '누나는 친절합니다.', category: '가족' },
+        { word: '弟', meaning: '남동생', romaji: 'otouto', example: '弟は勉強しています。', exampleKo: '남동생은 공부하고 있습니다.', category: '가족' },
+        { word: '妹', meaning: '여동생', romaji: 'imouto', example: '妹は音楽が好きです。', exampleKo: '여동생은 음악을 좋아합니다.', category: '가족' },
+        { word: '仕事', meaning: '일', romaji: 'shigoto', example: '仕事が忙しいです。', exampleKo: '일이 바쁩니다.', category: '일상' },
+        { word: '休む', meaning: '쉬다', romaji: 'yasumu', example: '今日はゆっくり休みます。', exampleKo: '오늘은 편하게 쉴 거예요.', category: '동사' },
+        { word: '起きる', meaning: '일어나다', romaji: 'okiru', example: '6時に起きます。', exampleKo: '6시에 일어납니다.', category: '동사' },
+        { word: '寝る', meaning: '자다', romaji: 'neru', example: '夜はよく寝ます。', exampleKo: '밤에는 잘 자요.', category: '동사' },
+        { word: '見る', meaning: '보다', romaji: 'miru', example: 'テレビを見ます。', exampleKo: 'TV를 봅니다.', category: '동사' },
+        { word: '聞く', meaning: '듣다', romaji: 'kiku', example: '音楽を聞きます。', exampleKo: '음악을 듣습니다.', category: '동사' },
+        { word: '書く', meaning: '쓰다', romaji: 'kaku', example: 'ノートに書きます。', exampleKo: '노트에 씁니다.', category: '동사' },
+        { word: '読む', meaning: '읽다', romaji: 'yomu', example: '本を読んでいます。', exampleKo: '책을 읽고 있습니다.', category: '동사' },
+        { word: '使う', meaning: '사용하다', romaji: 'tsukau', example: 'スマホを使います。', exampleKo: '스마트폰을 사용합니다.', category: '동사' },
+        { word: '持つ', meaning: '가지다', romaji: 'motsu', example: 'バッグを持っています。', exampleKo: '가방을 들고 있습니다.', category: '동사' },
+        { word: '入る', meaning: '들어가다', romaji: 'hairu', example: '部屋に入ります。', exampleKo: '방에 들어갑니다.', category: '동사' },
+        { word: '出る', meaning: '나가다', romaji: 'deru', example: '駅から出ます。', exampleKo: '역에서 나옵니다.', category: '동사' },
+        { word: '帰る', meaning: '돌아가다', romaji: 'kaeru', example: '家に帰ります。', exampleKo: '집에 돌아갑니다.', category: '동사' },
+        { word: '住む', meaning: '살다, 거주하다', romaji: 'sumu', example: '東京に住んでいます。', exampleKo: '도쿄에 살고 있습니다.', category: '동사' },
+        { word: '知る', meaning: '알다', romaji: 'shiru', example: 'そのことを知っています。', exampleKo: '그 사실을 알고 있습니다.', category: '동사' },
+        { word: '分かる', meaning: '알다, 이해하다', romaji: 'wakaru', example: '意味が分かりました。', exampleKo: '뜻을 이해했습니다.', category: '동사' },
+        { word: '思う', meaning: '생각하다', romaji: 'omou', example: '良い考えが思いつきました。', exampleKo: '좋은 생각이 떠올랐습니다.', category: '동사' },
+        { word: '会う', meaning: '만나다', romaji: 'au', example: '友達に会いました。', exampleKo: '친구를 만났습니다.', category: '동사' },
+        { word: '行く', meaning: '가다', romaji: 'iku', example: '駅に行きます。', exampleKo: '역에 갑니다.', category: '동사' },
+        { word: '来る', meaning: '오다', romaji: 'kuru', example: '明日、来てください。', exampleKo: '내일 와 주세요.', category: '동사' },
+        { word: '教える', meaning: '가르치다', romaji: 'oshieru', example: '先生が文法を教えます。', exampleKo: '선생님이 문법을 가르쳐 줍니다.', category: '동사' },
+        { word: '習う', meaning: '배우다', romaji: 'narau', example: '日本語を習っています。', exampleKo: '일본어를 배우고 있습니다.', category: '동사' },
+        { word: '忘れる', meaning: '잊다', romaji: 'wasureru', example: '鍵を忘れました。', exampleKo: '열쇠를 잊어버렸습니다.', category: '동사' },
+        { word: '笑う', meaning: '웃다', romaji: 'warau', example: 'みんなで笑いました。', exampleKo: '다 같이 웃었습니다.', category: '동사' },
+        { word: '泣く', meaning: '울다', romaji: 'naku', example: '子どもが泣いています。', exampleKo: '아이가 울고 있습니다.', category: '동사' },
+        { word: '嬉しい', meaning: '기쁘다', romaji: 'ureshii', example: 'いい知らせで嬉しいです。', exampleKo: '좋은 소식이라 기쁩니다.', category: '감정' },
+        { word: '悲しい', meaning: '슬프다', romaji: 'kanashii', example: '別れは悲しいです。', exampleKo: '이별은 슬픕니다.', category: '감정' },
+        { word: '眠い', meaning: '졸리다', romaji: 'nemui', example: '今日は眠いです。', exampleKo: '오늘은 졸립니다.', category: '감정' },
+        { word: '元気', meaning: '에너지, 건강', romaji: 'genki', example: '元気に頑張っています。', exampleKo: '건강하게 열심히 하고 있습니다.', category: '감정' },
+        { word: '大きい', meaning: '크다', romaji: 'ookii', example: '大きい部屋が好きです。', exampleKo: '큰 방이 좋습니다.', category: '형용사' },
+        { word: '小さい', meaning: '작다', romaji: 'chiisai', example: '小さい猫です。', exampleKo: '작은 고양이입니다.', category: '형용사' },
+        { word: '高い', meaning: '비싸다 / 높다', romaji: 'takai', example: 'この店は高いです。', exampleKo: '이 가게는 비싸요.', category: '형용사' },
+        { word: '安い', meaning: '싸다', romaji: 'yasui', example: '安い服を買いました。', exampleKo: '저렴한 옷을 샀습니다.', category: '형용사' },
+        { word: '近い', meaning: '가깝다', romaji: 'chikai', example: '駅が近いです。', exampleKo: '역이 가깝습니다.', category: '형용사' },
+        { word: '遠い', meaning: '멀다', romaji: 'too i', example: '学校が遠いです。', exampleKo: '학교가 멉니다.', category: '형용사' },
+        { word: '速い', meaning: '빠르다', romaji: 'hayai', example: '電車は速いです。', exampleKo: '전차는 빠릅니다.', category: '형용사' },
+        { word: '遅い', meaning: '느리다 / 늦다', romaji: 'osoi', example: '電車が遅いです。', exampleKo: '전차가 늦습니다.', category: '형용사' },
+        { word: '簡単', meaning: '간단하다', romaji: 'kantan', example: 'この問題は簡単です。', exampleKo: '이 문제는 간단합니다.', category: '표현' },
+        { word: '難しい', meaning: '어렵다', romaji: 'muzukashii', example: '日本語は難しいですが面白いです。', exampleKo: '일본어는 어려워도 재미있습니다.', category: '표현' },
+        { word: '新しい', meaning: '새롭다', romaji: 'atarashii', example: '新しいスマホを買いました。', exampleKo: '새 스마트폰을 샀습니다.', category: '형용사' },
+        { word: '古い', meaning: '오래되다', romaji: 'furui', example: '古い本を読みます。', exampleKo: '오래된 책을 읽습니다.', category: '형용사' },
+        { word: '美しい', meaning: '아름답다', romaji: 'utsukushii', example: '美しい景色です。', exampleKo: '아름다운 경치입니다.', category: '형용사' },
+        { word: '静か', meaning: '조용하다', romaji: 'shizuka', example: '静かな街です。', exampleKo: '조용한 동네입니다.', category: '형용사' },
+        { word: '明るい', meaning: '밝다', romaji: 'akarui', example: '明るい部屋です。', exampleKo: '밝은 방입니다.', category: '형용사' },
+        { word: '暗い', meaning: '어둡다', romaji: 'kurai', example: '暗い夜でした。', exampleKo: '어두운 밤이었습니다.', category: '형용사' },
+        { word: 'きれい', meaning: '예쁘다 / 깨끗하다', romaji: 'kirei', example: 'きれいな花です。', exampleKo: '예쁜 꽃입니다.', category: '형용사' },
+        { word: '忙しい', meaning: '바쁘다', romaji: 'isogashii', example: '今週は忙しいです。', exampleKo: '이번 주는 바쁩니다.', category: '감정' },
+        { word: '楽しい', meaning: '재미있다', romaji: 'tanoshii', example: '旅行は楽しいです。', exampleKo: '여행은 재미있습니다.', category: '감정' },
+        { word: '面白い', meaning: '재미있다', romaji: 'omoshiroi', example: '面白い本を読みました。', exampleKo: '재미있는 책을 읽었습니다.', category: '감정' },
+        { word: '安心', meaning: '안심', romaji: 'anshin', example: '安心して話せます。', exampleKo: '안심하고 말할 수 있습니다.', category: '표현' },
+        { word: '驚く', meaning: '놀라다', romaji: 'odoroku', example: 'そのニュースに驚きました。', exampleKo: '그 소식에 놀랐습니다.', category: '동사' },
+        { word: '期待', meaning: '기대', romaji: 'kitai', example: '明日の結果を期待しています。', exampleKo: '내일 결과를 기대하고 있습니다.', category: '표현' },
+        { word: '夢', meaning: '꿈', romaji: 'yume', example: '良い夢を見ました。', exampleKo: '좋은 꿈을 꾸었습니다.', category: '명사' },
+        { word: '空', meaning: '하늘', romaji: 'sora', example: '空が青いです。', exampleKo: '하늘이 파랗습니다.', category: '자연' },
+        { word: '海', meaning: '바다', romaji: 'umi', example: '海を見に行きます。', exampleKo: '바다를 보러 갑니다.', category: '자연' },
+        { word: '山', meaning: '산', romaji: 'yama', example: '山に登ります。', exampleKo: '산에 올라갑니다.', category: '자연' },
+        { word: '花', meaning: '꽃', romaji: 'hana', example: '花がきれいです。', exampleKo: '꽃이 예쁘습니다.', category: '자연' },
+        { word: '木', meaning: '나무', romaji: 'ki', example: '木の下で休みます。', exampleKo: '나무 아래서 쉴 거예요.', category: '자연' },
+        { word: '風', meaning: '바람', romaji: 'kaze', example: '風が強いです。', exampleKo: '바람이 강합니다.', category: '자연' },
+        { word: '雪', meaning: '눈', romaji: 'yuki', example: '雪が降っています。', exampleKo: '눈이 내리고 있습니다.', category: '자연' },
+        { word: '春', meaning: '봄', romaji: 'haru', example: '春が好きです。', exampleKo: '봄이 좋아요.', category: '시즌' },
+        { word: '夏', meaning: '여름', romaji: 'natsu', example: '夏は海へ行きます。', exampleKo: '여름에는 바다에 갑니다.', category: '시즌' },
+        { word: '秋', meaning: '가을', romaji: 'aki', example: '秋の空はきれいです。', exampleKo: '가을 하늘은 예쁩니다.', category: '시즌' },
+        { word: '冬', meaning: '겨울', romaji: 'fuyu', example: '冬は雪が多いです。', exampleKo: '겨울에는 눈이 많습니다.', category: '시즌' },
+        { word: '食べ物', meaning: '음식', romaji: 'tabemono', example: '食べ物の好き嫌いがあります。', exampleKo: '음식 취향이 있습니다.', category: '생활' },
+        { word: '飲む', meaning: '마시다', romaji: 'nomu', example: 'お茶を飲みます。', exampleKo: '차를 마십니다.', category: '동사' },
+        { word: '水', meaning: '물', romaji: 'mizu', example: '水を飲みました。', exampleKo: '물을 마셨습니다.', category: '생활' },
+        { word: 'お米', meaning: '쌀', romaji: 'okome', example: 'お米はおいしいです。', exampleKo: '쌀은 맛있습니다.', category: '음식' },
+        { word: 'パン', meaning: '빵', romaji: 'pan', example: 'パンを買いました。', exampleKo: '빵을 샀습니다.', category: '음식' },
+        { word: 'ご飯', meaning: '밥', romaji: 'gohan', example: 'ご飯を食べます。', exampleKo: '밥을 먹습니다.', category: '음식' },
+        { word: '牛乳', meaning: '우유', romaji: 'gyuunyuu', example: '牛乳を飲みます。', exampleKo: '우유를 마십니다.', category: '음식' },
+        { word: 'お菓子', meaning: '과자', romaji: 'okashi', example: 'お菓子を食べます。', exampleKo: '과자를 먹습니다.', category: '음식' },
+        { word: '野菜', meaning: '야채', romaji: 'yasai', example: '野菜をたくさん食べます。', exampleKo: '야채를 많이 먹습니다.', category: '음식' },
+        { word: '肉', meaning: '고기', romaji: 'niku', example: '肉が好きです。', exampleKo: '고기를 좋아합니다.', category: '음식' },
+        { word: '魚', meaning: '생선', romaji: 'sakana', example: '魚を食べます。', exampleKo: '생선을 먹습니다.', category: '음식' },
+        { word: '果物', meaning: '과일', romaji: 'kudamono', example: '果物が好きです。', exampleKo: '과일을 좋아합니다.', category: '음식' },
+        { word: '教室', meaning: '교실', romaji: 'kyoushitsu', example: '教室で勉強します。', exampleKo: '교실에서 공부합니다.', category: '장소' },
+        { word: '部屋', meaning: '방', romaji: 'heya', example: '部屋がきれいです。', exampleKo: '방이 깨끗합니다.', category: '장소' },
+        { word: '机', meaning: '책상', romaji: 'tsukue', example: '机の上にノートがあります。', exampleKo: '책상 위에 노트가 있습니다.', category: '생활' },
+        { word: '椅子', meaning: '의자', romaji: 'isu', example: '椅子に座ります。', exampleKo: '의자에 앉습니다.', category: '생활' },
+        { word: '窓', meaning: '창문', romaji: 'mado', example: '窓を開けます。', exampleKo: '창문을 엽니다.', category: '생활' },
+        { word: 'ドア', meaning: '문', romaji: 'doa', example: 'ドアを閉めました。', exampleKo: '문을 닫았습니다.', category: '생활' },
+        { word: '財布', meaning: '지갑', romaji: 'saifu', example: '財布を持っています。', exampleKo: '지갑을 들고 있습니다.', category: '생활' },
+        { word: '鍵', meaning: '열쇠', romaji: 'kagi', example: '鍵を探しています。', exampleKo: '열쇠를 찾고 있습니다.', category: '생활' },
+        { word: '帽子', meaning: '모자', romaji: 'boushi', example: '帽子をかぶっています。', exampleKo: '모자를 쓰고 있습니다.', category: '생활' },
+        { word: '服', meaning: '옷', romaji: 'fuku', example: '服を選んでいます。', exampleKo: '옷을 고르고 있습니다.', category: '생활' },
+        { word: '靴', meaning: '신발', romaji: 'kutsu', example: '靴を履きます。', exampleKo: '신발을 신습니다.', category: '생활' },
+        { word: 'お話できますか', meaning: '이야기 좀 할 수 있을까요?', romaji: 'ohanashi dekimasu ka', example: 'ちょっと、お話できますか。', example2: '少しだけお話できますか。', exampleKo: '잠깐 이야기 좀 할 수 있을까요?', exampleKo2: '조금만 이야기할 수 있을까요?', category: '회화' },
+        { word: 'お時間ありますか', meaning: '시간 좀 있으세요?', romaji: 'ojikan arimasu ka', example: 'ちょっと、お時間ありますか。', example2: '今、少し時間ありますか。', exampleKo: '잠깐 시간 있으세요?', exampleKo2: '지금 조금 시간 있으신가요?', category: '회화' },
+        { word: 'お話ししたいんですが', meaning: '드릴 말씀이 있는데요', romaji: 'ohanashi shitai n desu ga', example: 'お話ししたいんですが。', example2: 'ちょっとお話ししたいことがあるんですが。', exampleKo: '드릴 말씀이 있는데요.', exampleKo2: '잠깐 말씀드릴 게 있는데요.', category: '회화' },
+        { word: '話し合いたい', meaning: '이야기를 나누고 싶다', romaji: 'hanashiatai', example: '少し話し合いたいんですが。', example2: '一緒に話し合いたいです。', exampleKo: '잠깐 이야기를 나누고 싶은데요.', exampleKo2: '같이 이야기하고 싶어요.', category: '회화' },
+        { word: '少しだけ話出来れば', meaning: '잠시만 이야기하면 됩니다', romaji: 'sukoshidake hanashi dekireba', example: '少しだけ話出来ればいいです。', example2: '少しだけ話せば十分です。', exampleKo: '잠시만 이야기하면 됩니다.', exampleKo2: '잠깐 말해주시면 충분해요.', category: '회화' },
+        { word: 'もしもし', meaning: '여보세요', romaji: 'moshimoshi', example: 'もしもし、今話せますか？', example2: 'もしもし、少しよろしいですか？', exampleKo: '여보세요, 지금 말할 수 있나요?', exampleKo2: '여보세요, 잠깐 괜찮으신가요?', category: '회화' },
+        { word: '失礼します', meaning: '실례합니다', romaji: 'shitsurei shimasu', example: '先生、失礼します。質問してもよろしいでしょうか。', example2: '失礼します。少しお聞きしたいことがあります。', exampleKo: '선생님, 실례합니다. 질문해도 될까요?', exampleKo2: '실례합니다. 잠깐 여쭤보고 싶은 게 있습니다.', category: '회화' },
+        { word: 'お話中失礼ですが', meaning: '말씀하는 중에 실례합니다만', romaji: 'ohanashichu shitsurei desu ga', example: 'お話中失礼ですが。ちょっとお話したい事があるんですが。', example2: 'お話中失礼ですが、少しお聞きしたいことがあります。', exampleKo: '말씀 중에 실례합니다만, 잠깐 말씀드릴 게 있는데요.', exampleKo2: '말씀 중에 실례합니다만, 잠깐 여쭤보고 싶은 게 있습니다.', category: '회화' },
+        { word: '今お忙しいですか', meaning: '지금 바쁘십니까?', romaji: 'ima oisogashii desu ka', example: '今お忙しいですか。', example2: '今、少しお忙しいですか。', exampleKo: '지금 바쁘세요?', exampleKo2: '지금 좀 바쁘신가요?', category: '회화' },
+        { word: 'すみませんが', meaning: '죄송하지만', romaji: 'sumimasen ga', example: 'あの、すみませんが…。', example2: 'すみませんが、少しお願いできますか。', exampleKo: '저, 죄송하지만…', exampleKo2: '죄송하지만, 잠깐 부탁드려도 될까요?', category: '회화' },
+        { word: '時間を取る', meaning: '시간을 잡다', romaji: 'jikan o toru', example: '時間をあまり取ることはできません。', example2: '時間を多く取ることはできません。', exampleKo: '시간을 많이 드릴 수는 없습니다.', exampleKo2: '시간을 많이 빼앗는 건 어렵습니다.', category: '회화' },
+      ];
+
+      function normalizeExample(value) {
+        return String(value || '')
+          .replace(/[！？!?.,。]/g, '')
+          .replace(/\s+/g, '')
+          .trim()
+          .toLowerCase();
+      }
+
+      const exampleFallbackLibrary = {
+        default: [
+          { ja: '今日は気分がいいので、すぐに使えそうです。', ko: '오늘 기분도 좋고, 바로 쓸 수 있을 것 같아요.' },
+          { ja: '少しずつ練習すると自然に使えます。', ko: '조금씩 연습하면 자연스럽게 쓸 수 있어요.' },
+          { ja: '会話でよく使う表現なので、繰り返し覚えましょう。', ko: '회화에서 자주 쓰는 표현이니 반복해서 외우세요.' },
+          { ja: 'とても簡単な例文なので、意味をよく覚えましょう。', ko: '매우 쉬운 예문이니 의미를 잘 기억해 보세요.' },
+          { ja: '文章の流れに合わせて使うと、より自然になります。', ko: '문장의 흐름에 맞춰 쓰면 더 자연스러워져요.' },
+          { ja: '実際の会話で使うと、覚えやすくなります。', ko: '실제 회화에서 쓰면 더 기억하기 쉬워져요.' }
+        ]
+      };
+
+      function getFallbackExample(entry) {
+        const fallbackPool = exampleFallbackLibrary[entry.category] || exampleFallbackLibrary.default;
+        const primaryKey = normalizeExample(entry.example || entry.example2 || '');
+
+        const fallback = fallbackPool.find((candidate) => normalizeExample(candidate.ja) !== primaryKey);
+        return fallback || { ja: `${entry.example || entry.word}。`, ko: `${entry.exampleKo || entry.meaning}。` };
+      }
+
+      const hiraganaLookup = {
+        'こんにちは': 'こんにちは',
+        'ありがとう': 'ありがとう',
+        'すみません': 'すみません',
+        'おはようございます': 'おはようございます',
+        '食べる': 'たべる',
+        '水': 'みず',
+        '駅': 'えき',
+        '行きます': 'いきます',
+        '大丈夫': 'だいじょうぶ',
+        '明日': 'あした',
+        '家': 'いえ',
+        '会社': 'かいしゃ',
+        '人': 'ひと',
+        '時間': 'じかん',
+        '買う': 'かう',
+        '休み': 'やすみ',
+        '歩く': 'あるく',
+        '電話': 'でんわ',
+        '雨': 'あめ',
+        '朝': 'あさ',
+        '夜': 'よる',
+        '好き': 'すき',
+        '嫌い': 'きらい',
+        '話す': 'はなす',
+        '聞く': 'きく',
+        '料理': 'りょうり',
+        '病院': 'びょういん',
+        '便利': 'べんり',
+        '早い': 'はやい',
+        '学校': 'がっこう',
+        '友達': 'ともだち',
+        '食事': 'しょくじ',
+        '店': 'みせ',
+        '公園': 'こうえん',
+        '電車': 'でんしゃ',
+        '車': 'くるま',
+        '自転車': 'じてんしゃ',
+        '週末': 'しゅうまつ',
+        '会話': 'かいわ',
+        '話し合いたい': 'はなしあいたい',
+        'お話できますか': 'おはなしできますか',
+        'お時間ありますか': 'おじかんありますか',
+        'お話ししたいんですが': 'おはなししたいんですが',
+        'もしもし': 'もしもし',
+        '失礼します': 'しつれいします',
+        'お話中失礼ですが': 'おはなしちゅうしつれいですが',
+        '今お忙しいですか': 'いまおいそがしいですか',
+        'すみませんが': 'すみませんが',
+        '時間を取る': 'じかんをとる'
+      };
+
+      function buildDistinctExamplePair(item, fallbackSeed = 0) {
+        const primary = item.example || `${item.word}を使った例文です。`;
+        const variants = [
+          `${item.word}を使うと、会話がもっと自然になります。`,
+          `この場面では${item.word}がとても役立ちます。`,
+          `今日は${item.word}を使って表現してみましょう。`,
+          `友達との会話で${item.word}をよく使います。`,
+          `${item.word}を使うと、相手に伝わりやすくなります。`
+        ];
+
+        const targetIndex = (fallbackSeed + (item.word.length % variants.length)) % variants.length;
+        let second = variants[targetIndex];
+        if (normalizeExample(second) === normalizeExample(primary)) {
+          second = variants[(targetIndex + 1) % variants.length];
+        }
+
+        const secondKo = [
+          `${item.meaning}을 사용하면 대화가 더 자연스러워집니다.`,
+          `이 상황에서는 ${item.meaning}이 정말 유용합니다.`,
+          `오늘은 ${item.meaning}을 써서 표현해 봐요.`,
+          `친구와의 대화에서 ${item.meaning}을 자주 사용해요.`,
+          `${item.meaning}을 쓰면 상대에게 더 잘 전달됩니다.`
+        ][targetIndex] || `${item.meaning}을 사용하면 더 자연스럽게 전달할 수 있어요.`;
+
+        return {
+          example2: second,
+          exampleKo2: secondKo
+        };
+      }
+
+      function buildVocabulary(count) {
+        const vocabulary = baseVocabulary.map((item, index) => {
+          const fallback = getFallbackExample(item);
+          const generated = buildDistinctExamplePair(item, index);
+          const example2 = item.example2 || generated.example2;
+          const exampleKo2 = item.exampleKo2 || generated.exampleKo2;
+
+          return {
+            ...item,
+            kana: item.kana || resolveWordKana(item.word),
+            example2: normalizeExample(example2) === normalizeExample(item.example || '') ? fallback.ja : example2,
+            exampleKo2: normalizeExample(exampleKo2) === normalizeExample(item.exampleKo || '') ? fallback.ko : exampleKo2
+          };
+        });
+
+        for (let i = baseVocabulary.length; i < count; i += 1) {
+          const seed = vocabulary[i % vocabulary.length];
+          const exampleSuffix = ` (${i + 1})`;
+          const generated = buildDistinctExamplePair({
+            ...seed,
+            example: seed.example || `${seed.word}を使った例文です。`,
+            exampleKo: seed.exampleKo || `${seed.meaning}을 사용한 예문입니다.`,
+            meaning: seed.meaning || '사용하다'
+          }, i);
+          vocabulary.push({
+            ...seed,
+            kana: seed.kana || resolveWordKana(seed.word),
+            example: `${seed.example || seed.word}${exampleSuffix}`,
+            exampleKo: `${seed.exampleKo || seed.meaning}${exampleSuffix}`,
+            example2: `${generated.example2}${exampleSuffix}`,
+            exampleKo2: `${generated.exampleKo2}${exampleSuffix}`
+          });
+        }
+
+        return vocabulary;
+      }
+
+      const vocabulary = buildVocabulary(1000);
+
+      function makeConversationSet(baseEntries, extraEntries) {
+        const combined = [...baseEntries, ...extraEntries];
+        const uniqueEntries = [];
+        const seen = new Set();
+
+        combined.forEach((entry) => {
+          const key = normalizeExample(entry.ja);
+          if (!key || seen.has(key)) {
+            return;
+          }
+          seen.add(key);
+          uniqueEntries.push({
+            ja: entry.ja,
+            ko: entry.ko,
+            kana: entry.kana || entry.ja
+          });
+        });
+
+        if (uniqueEntries.length === 0) {
+          return [];
+        }
+
+        for (let i = uniqueEntries.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [uniqueEntries[i], uniqueEntries[j]] = [uniqueEntries[j], uniqueEntries[i]];
+        }
+
+        return uniqueEntries;
+      }
+
+      const conversationTopics = {
+        talk: makeConversationSet(
+          [
+            { ja: 'ちょっと、お話できますか。', ko: '잠깐 이야기 좀 할 수 있을까요?', kana: 'ちょっと、おはなしできますか。' },
+            { ja: 'ちょっと、お時間ありますか。', ko: '잠깐 시간 있으세요?', kana: 'ちょっと、おじかんありますか。' },
+            { ja: 'お話ししたいんですが。', ko: '드릴 말씀이 있는데요.', kana: 'おはなししたいんですが。' },
+            { ja: '少し話し合いたいんですが。', ko: '잠깐 이야기 나누고 싶은데요.', kana: 'すこしはなしあいたいんですが。' },
+            { ja: '少しだけ話出来ればいいです。', ko: '잠시만 이야기하면 됩니다.', kana: 'すこしだけはなしできればいいです。' },
+            { ja: 'はい、ちょっと話するようにしましょう。', ko: '네, 잠시 이야기하도록 하죠.', kana: 'はい、ちょっとはなすようにしましょう。' },
+            { ja: 'もしもし。', ko: '여보세요.', kana: 'もしもし。' },
+            { ja: '先生。失礼します。質問してもよろしいでしょうか。', ko: '선생님, 실례합니다. 질문해도 될까요?', kana: 'せんせい。しつれいします。しつもんしてもよろしいでしょうか。' },
+            { ja: 'お話中失礼ですが。ちょっとお話したい事があるんですが。', ko: '말씀 중에 실례합니다만, 잠깐 말씀드릴 게 있는데요.', kana: 'おはなしちゅうしつれいですが。ちょっとおはなししたいことがあるんですが。' },
+            { ja: '今お忙しいですか。', ko: '지금 바쁘세요?', kana: 'いまおいそがしいですか。' },
+            { ja: 'あの、すみませんが…。', ko: '저, 죄송하지만…', kana: 'あの、すみませんが…。' },
+            { ja: '時間をあまり取ることはできません。', ko: '시간을 많이 드릴 수는 없습니다.', kana: 'じかんをあまりとることはできません。' }
+          ],
+          [
+            { ja: '少しだけお話できますか。', ko: '잠깐만 이야기할 수 있을까요?', kana: 'すこしだけおはなしできますか。' },
+            { ja: '今、少し話したいことがあります。', ko: '지금 잠깐 이야기하고 싶은 게 있습니다.', kana: 'いま、すこしはなしたいことがあります。' },
+            { ja: '今は少し忙しいです。', ko: '지금은 조금 바빠요.', kana: 'いまはすこしはたらしいです。' },
+            { ja: 'もしもし、連絡がありました。', ko: '여보세요, 연락이 왔습니다.', kana: 'もしもし、れんらくがありました。' },
+            { ja: 'この件について相談したいです。', ko: '이 일에 대해 상담하고 싶어요.', kana: 'このけんについてそうだんしたいです。' },
+            { ja: '少しだけお時間をいただけますか。', ko: '잠깐만 시간을 내주실 수 있을까요?', kana: 'すこしだけおじかんをいただけますか。' },
+            { ja: '話す内容を整理したいです。', ko: '말할 내용을 정리하고 싶어요.', kana: 'はなすないようをせいりしたいです。' },
+            { ja: 'ご迷惑をおかけします。', ko: '불편을 드려 죄송합니다.', kana: 'ごめいわくをおかけします。' },
+            { ja: '話す機会をありがとうございます。', ko: '이야기할 기회를 주셔서 감사합니다.', kana: 'はなすきかいをありがとうございます。' },
+            { ja: '次に会話を続けましょう。', ko: '다음에 대화를 이어가요.', kana: 'つぎにかいわをつづけましょう。' }
+          ]
+        ),
+        greeting: makeConversationSet(
+          [
+            { ja: 'おはようございます。', ko: '좋은 아침입니다.', kana: 'おはようございます。' },
+            { ja: 'こんにちは。', ko: '안녕하세요.', kana: 'こんにちは。' },
+            { ja: 'お元気ですか？', ko: '잘 지내세요?', kana: 'おげんきですか？' },
+            { ja: '今日はどうでしたか？', ko: '오늘은 어땠어요?', kana: 'きょうはどうでしたか？' },
+            { ja: 'また明日！', ko: '내일 또 봐요!', kana: 'またあした！' },
+            { ja: '今日は会えてうれしいです。', ko: '오늘 만나서 기뻐요.', kana: 'きょうはあえてうれしいです。' },
+            { ja: '少し遅くなりました。', ko: '조금 늦었습니다.', kana: 'すこしおくなりました。' },
+            { ja: 'お疲れさまです。', ko: '수고하셨습니다.', kana: 'おつかれさまです。' }
+          ],
+          [
+            { ja: '今日はいい天気ですね。', ko: '오늘 날씨가 좋네요.', kana: 'きょうはいいてんきですね。' },
+            { ja: '最近どうですか？', ko: '요즘 어떻게 지내세요?', kana: 'さいきんどうですか？' },
+            { ja: 'また会いましょう。', ko: '다음에 또 만나요.', kana: 'またあいましょう。' },
+            { ja: '良い一日を！', ko: '좋은 하루 되세요!', kana: 'いいいちにちを！' },
+            { ja: '今日はありがとう。', ko: '오늘 고마워요.', kana: 'きょうはありがとう。' },
+            { ja: '今度、ゆっくり話しましょう。', ko: '다음에 천천히 이야기해요.', kana: 'こんど、ゆっくりはなしましょう。' },
+            { ja: '気をつけてください。', ko: '조심하세요.', kana: 'きをつけてください。' },
+            { ja: 'だいぶ落ち着きました。', ko: '많이 진정됐어요.', kana: 'だいぶおちつきました。' },
+            { ja: '今日は本当に良かったです。', ko: '오늘 정말 좋았어요.', kana: 'きょうはほんとうによかったです。' },
+            { ja: 'また連絡します。', ko: '다음에 연락할게요.', kana: 'またれんらくします。' }
+          ]
+        ),
+        travel: makeConversationSet(
+          [
+            { ja: '駅はどこですか？', ko: '역이 어디에 있나요?', kana: 'えきはどこですか？' },
+            { ja: 'この電車は新宿へ行きますか？', ko: '이 전철은 신주쿠로 가나요?', kana: 'このでんしゃはしんじゅくへいきますか？' },
+            { ja: 'チケットを一枚ください。', ko: '표를 한 장 주세요.', kana: 'ちけっとをひとまいください。' },
+            { ja: '次の駅で降ります。', ko: '다음 역에서 내립니다.', kana: 'つぎのえきでおります。' },
+            { ja: 'バス停はここですか？', ko: '버스 정류장은 여기인가요?', kana: 'ばすていはここですか？' },
+            { ja: 'この近くにレストランはありますか？', ko: '이 근처에 식당이 있나요?', kana: 'このちかくにれすとらんはありますか？' },
+            { ja: '地図を見せてください。', ko: '지도를 보여주세요.', kana: 'ちずをみせてください。' },
+            { ja: 'ここから駅まで歩いて何分ですか？', ko: '여기서 역까지 걸어 몇 분인가요?', kana: 'ここからえきまであるいてなんぷんですか？' }
+          ],
+          [
+            { ja: 'この道をまっすぐ行きます。', ko: '이 길을 쭉 가면 됩니다.', kana: 'このみちをまっすぐいきます。' },
+            { ja: '左に曲がってください。', ko: '왼쪽으로 꺾으세요.', kana: 'ひだりにまがってください。' },
+            { ja: '駅前で降ります。', ko: '역 앞에서 내립니다.', kana: 'えきまえでおります。' },
+            { ja: 'このバスは空港に行きますか？', ko: '이 버스는 공항에 가나요?', kana: 'このばすはくうこうにいきますか？' },
+            { ja: '大丈夫ですか？', ko: '괜찮나요?', kana: 'だいじょうぶですか？' },
+            { ja: 'そこを見てください。', ko: '그쪽을 보세요.', kana: 'そこをみてください。' },
+            { ja: 'タクシーを呼んでください。', ko: '택시를 불러주세요.', kana: 'たくしーをよんでください。' },
+            { ja: '駅の改札を出て右です。', ko: '역 개찰을 나와서 오른쪽입니다.', kana: 'えきのかいさつをでてみぎです。' },
+            { ja: '近いので歩いて行きましょう。', ko: '가깝기 때문에 걸어서 가요.', kana: 'ちかいのであるいていきましょう。' },
+            { ja: 'どのくらいかかりますか？', ko: '얼마나 걸리나요?', kana: 'どのくらいかかりますか？' }
+          ]
+        ),
+        food: makeConversationSet(
+          [
+            { ja: '何を食べますか？', ko: '뭐 먹을까요?', kana: 'なにをたべますか？' },
+            { ja: 'おすすめは何ですか？', ko: '추천 메뉴는 무엇인가요?', kana: 'おすすめはなにですか？' },
+            { ja: 'お水をください。', ko: '물 주세요.', kana: 'おみずをください。' },
+            { ja: '味はどうですか？', ko: '맛은 어때요?', kana: 'あじはどうですか？' },
+            { ja: 'お会計をお願いします。', ko: '계산 부탁드립니다.', kana: 'おかいけいをおねがいします。' },
+            { ja: '少しゆっくり食べたいです。', ko: '조금 천천히 먹고 싶어요.', kana: 'すこしゆっくりたべたいです。' },
+            { ja: 'この店は人気があります。', ko: '이 가게는 인기가 있어요.', kana: 'このみせはにんきがあります。' },
+            { ja: '私は野菜が好きです。', ko: '저는 야채를 좋아해요.', kana: 'わたしはやさいがすきです。' }
+          ],
+          [
+            { ja: '温かい料理が食べたいです。', ko: '따뜻한 음식을 먹고 싶어요.', kana: 'あたたかいりょうりがたべたいです。' },
+            { ja: '辛いものは苦手です。', ko: '매운 건 못 먹어요.', kana: 'からいものはにがてです。' },
+            { ja: '量を増やしてもらえますか？', ko: '양을 더 늘려주실 수 있나요?', kana: 'りょうをふやしてもらえますか？' },
+            { ja: 'これは何ですか？', ko: '이건 뭔가요?', kana: 'これはなにですか？' },
+            { ja: '塩分を控えめにしてください。', ko: '염분을 적게 해주세요.', kana: 'えんぶんをひかえめにしてください。' },
+            { ja: 'もう少し早く出してください。', ko: '조금 더 빨리 나와주세요.', kana: 'もうすこしはやくだしてください。' },
+            { ja: 'このスープはおいしいです。', ko: '이 스프가 맛있어요.', kana: 'このすーぷはおいしいです。' },
+            { ja: 'フォークが必要です。', ko: '포크가 필요해요.', kana: 'ふぉーくがひつようです。' },
+            { ja: 'ご飯はおかわりできますか？', ko: '밥을 추가해도 될까요?', kana: 'ごはんはおかわりできますか？' },
+            { ja: 'デザートもお願いします。', ko: '디저트도 부탁드립니다.', kana: 'でざーともおねがいします。' }
+          ]
+        ),
+        daily: makeConversationSet(
+          [
+            { ja: '今日は忙しいです。', ko: '오늘은 바빠요.', kana: 'きょうははたらしいです。' },
+            { ja: '家に帰ります。', ko: '집에 돌아가요.', kana: 'うちにかえります。' },
+            { ja: '明日、買い物をします。', ko: '내일 쇼핑할게요.', kana: 'あした、かいものをします。' },
+            { ja: '朝はいつも早く起きます。', ko: '아침에는 항상 일찍 일어나요.', kana: 'あさはいつもはやくおきます。' },
+            { ja: '今日は少し疲れています。', ko: '오늘은 조금 피곤해요.', kana: 'きょうはすこしつかれています。' },
+            { ja: '夜はゆっくり休みます。', ko: '밤에는 편하게 쉴 거예요.', kana: 'よるはゆっくりやすみます。' },
+            { ja: '洗濯をしました。', ko: '세탁을 했어요.', kana: 'せんたくをしました。' },
+            { ja: '今日の予定を確認しました。', ko: '오늘 일정을 확인했어요.', kana: 'きょうのよていをかくにんしました。' }
+          ],
+          [
+            { ja: '眠いですが、頑張ります。', ko: '졸리지만 열심히 할게요.', kana: 'ねむいですが、がんばります。' },
+            { ja: '食事を作りました。', ko: '밥을 만들었어요.', kana: 'しょくじをつくりました。' },
+            { ja: '部屋を片付けています。', ko: '방을 정리하고 있어요.', kana: 'へやをかたづけています。' },
+            { ja: '今日は休みたいです。', ko: '오늘은 쉬고 싶어요.', kana: 'きょうはやすみたいです。' },
+            { ja: '早めに寝ます。', ko: '일찍 잘 거예요.', kana: 'はやめにねます。' },
+            { ja: '家事が少し大変です。', ko: '집안일이 조금 힘들어요.', kana: 'かじがすこしたいへんです。' },
+            { ja: '週末に会いましょう。', ko: '주말에 만나요.', kana: 'しゅうまつにあいましょう。' },
+            { ja: '仕事が終わりました。', ko: '일이 끝났어요.', kana: 'しごとがおわりました。' },
+            { ja: '今日は少しゆっくり過ごします。', ko: '오늘은 조금 느긋하게 보낼게요.', kana: 'きょうはすこしゆっくりすごします。' },
+            { ja: '明日は休みです。', ko: '내일은 쉬는 날입니다.', kana: 'あしたはやすみです。' }
+          ]
+        ),
+        shopping: makeConversationSet(
+          [
+            { ja: 'このサイズを見せてください。', ko: '이 사이즈 보여주세요.', kana: 'このサイズをみせてください。' },
+            { ja: '値段はおいくらですか？', ko: '가격은 얼마인가요?', kana: 'ねだんはいくらですか？' },
+            { ja: 'これはいくらですか？', ko: '이건 얼마인가요?', kana: 'これはいくらですか？' },
+            { ja: '少し安くできますか？', ko: '조금 싸게 해주실 수 있나요?', kana: 'すこしやすくできますか？' },
+            { ja: 'これを袋に入れてください。', ko: '이것을 봉투에 넣어주세요.', kana: 'これをふくろにいれてください。' },
+            { ja: 'ありがとうございます。', ko: '감사합니다.', kana: 'ありがとうございます。' },
+            { ja: 'どこで買ったのですか？', ko: '어디서 사셨나요?', kana: 'どこでかったのですか？' },
+            { ja: 'この色が好きです。', ko: '이 색이 마음에 들어요.', kana: 'このいろがすきです。' }
+          ],
+          [
+            { ja: '試着してもいいですか？', ko: '입어봐도 될까요?', kana: 'しちゃくしてもいいですか？' },
+            { ja: 'サイズ感はどうですか？', ko: '사이즈감은 어떤가요?', kana: 'サイズかんはどうですか？' },
+            { ja: 'ほかの色も見たいです。', ko: '다른 색깔도 보고 싶어요.', kana: 'ほかのいろもみたいです。' },
+            { ja: '手伝っていただけますか？', ko: '도와주실 수 있나요?', kana: 'てつだっていただけますか？' },
+            { ja: 'この商品は人気です。', ko: '이 상품은 인기 있어요.', kana: 'このしょうひんはにんきです。' },
+            { ja: 'ポイントが使えますか？', ko: '포인트 쓸 수 있나요?', kana: 'ぽいんとがつかえますか？' },
+            { ja: 'クレジットカードで払えますか？', ko: '신용카드로 결제할 수 있나요?', kana: 'くれじっとかーどではらえますか？' },
+            { ja: 'ラッピングをお願いします。', ko: '포장 부탁드립니다.', kana: 'らっぴんぐをおねがいします。' },
+            { ja: 'この商品を予約したいです。', ko: '이 제품을 예약하고 싶어요.', kana: 'このしょうひんをよやくしたいです。' },
+            { ja: '今日はお得な日です。', ko: '오늘은 세일 날입니다.', kana: 'きょうはおとくなひです。' }
+          ]
+        ),
+        hospital: makeConversationSet(
+          [
+            { ja: '予約をしたいです。', ko: '예약하고 싶습니다.', kana: 'よやくをしたいです。' },
+            { ja: '症状を教えてください。', ko: '증상을 말해주세요.', kana: 'しょうじょうをおしえてください。' },
+            { ja: '薬をもらえますか？', ko: '약을 받아도 될까요?', kana: 'くすりをもらえますか？' },
+            { ja: '痛みが少しあります。', ko: '통증이 조금 있습니다.', kana: 'いたみがすこしあります。' },
+            { ja: '次の診察はいつですか？', ko: '다음 진찰은 언제인가요?', kana: 'つぎのしんさつはいつですか？' },
+            { ja: '大丈夫ですか？', ko: '괜찮나요?', kana: 'だいじょうぶですか？' },
+            { ja: 'これを飲んでください。', ko: '이것을 드세요.', kana: 'これをのんでください。' },
+            { ja: '休んでください。', ko: '휴식을 취하세요.', kana: 'やすんでください。' }
+          ],
+          [
+            { ja: '熱があります。', ko: '열이 있습니다.', kana: 'ねつがあります。' },
+            { ja: '咳が出ます。', ko: '기침이 납니다.', kana: 'せきがでます。' },
+            { ja: '眠れません。', ko: '잠을 못 자요.', kana: 'ねむれません。' },
+            { ja: '胸が痛いです。', ko: '가슴이 아파요.', kana: 'むねがいたいです。' },
+            { ja: '食欲がありません。', ko: '식욕이 없어요.', kana: 'しょくよくがありません。' },
+            { ja: 'いつからですか？', ko: '언제부터인가요?', kana: 'いつからですか？' },
+            { ja: '副作用はありますか？', ko: '부작용이 있나요?', kana: 'ふくさようはありますか？' },
+            { ja: '今日は調子がいいです。', ko: '오늘은 상태가 좋아요.', kana: 'きょうはちょうしがいいです。' },
+            { ja: '病院に行きました。', ko: '병원에 갔어요.', kana: 'びょういんにいきました。' },
+            { ja: '結果を待っています。', ko: '결과를 기다리고 있어요.', kana: 'けっかをまっています。' }
+          ]
+        ),
+        work: makeConversationSet(
+          [
+            { ja: '今日の予定を確認したいです。', ko: '오늘 일정을 확인하고 싶어요.', kana: 'きょうのよていをかくにんしたいです。' },
+            { ja: 'メールを送信しました。', ko: '메일을 보냈습니다.', kana: 'めーるをそうしんしました。' },
+            { ja: '会議は何時ですか？', ko: '회의는 몇 시인가요?', kana: 'かいぎはなんじですか？' },
+            { ja: 'この資料を見てください。', ko: '이 자료를 봐주세요.', kana: 'このしりょうをみてください。' },
+            { ja: '今日は残業します。', ko: '오늘은 야근합니다.', kana: 'きょうはざんぎょうします。' },
+            { ja: '少し休ませてください。', ko: '잠깐 쉬게 해주세요.', kana: 'すこしやすませてください。' },
+            { ja: 'お疲れさまです。', ko: '수고하셨습니다.', kana: 'おつかれさまです。' },
+            { ja: '報告をお願いします。', ko: '보고 부탁드립니다.', kana: 'ほうこくをおねがいします。' }
+          ],
+          [
+            { ja: '次の会議は来週です。', ko: '다음 회의는 다음 주입니다.', kana: 'つぎのかいぎはらいしゅうです。' },
+            { ja: '資料を共有します。', ko: '자료를 공유합니다.', kana: 'しりょうをきょうゆうします。' },
+            { ja: '締め切りが近いです。', ko: '마감이 가까워요.', kana: 'しめきりがちかいです。' },
+            { ja: '進捗を確認しました。', ko: '진행 상황을 확인했어요.', kana: 'しんちょくをかくにんしました。' },
+            { ja: 'この件をお願いします。', ko: '이 일 부탁드립니다.', kana: 'このけんをおねがいします。' },
+            { ja: '来週までに終わらせます。', ko: '다음 주 안에 끝내겠습니다.', kana: 'らいしゅうまでにおわらせます。' },
+            { ja: '会議の後、相談しましょう。', ko: '회의 후에 상의해요.', kana: 'かいぎのあと、そうだんしましょう。' },
+            { ja: '今、少し忙しいです。', ko: '지금 조금 바빠요.', kana: 'いま、すこしはたらしいです。' },
+            { ja: 'ありがとうございます。', ko: '감사합니다.', kana: 'ありがとうございます。' },
+            { ja: 'こちらの件は完了しました。', ko: '이 건은 완료됐습니다.', kana: 'こちらのけんはかんりょうしました。' }
+          ]
+        ),
+        social: makeConversationSet(
+          [
+            { ja: 'お互いに頑張りましょう。', ko: '서로 힘내요.', kana: 'おたがいにがんばりましょう。' },
+            { ja: '最近どうですか？', ko: '요즘 어떻게 지내세요?', kana: 'さいきんどうですか？' },
+            { ja: '一緒に食事に行きませんか？', ko: '같이 식사하러 가지 않을래요?', kana: 'いっしょにしょくじにいきませんか？' },
+            { ja: '今度、遊びましょう。', ko: '다음에 놀아요.', kana: 'こんど、あそびましょう。' },
+            { ja: 'ありがとうございました。', ko: '감사했습니다.', kana: 'ありがとうございます。' },
+            { ja: 'また連絡します。', ko: '다음에 연락할게요.', kana: 'またれんらくします。' },
+            { ja: '次の週末に会いましょう。', ko: '다음 주말에 만나요.', kana: 'つぎのしゅうまつにあいましょう。' },
+            { ja: 'いつも助かっています。', ko: '항상 큰 도움이 되고 있어요.', kana: 'いつもたすかっています。' }
+          ],
+          [
+            { ja: '今度、映画を見ませんか？', ko: '다음에 영화를 보지 않을래요?', kana: 'こんど、えいがをみませんか？' },
+            { ja: '話を聞いてくれてありがとう。', ko: '이야기를 들어줘서 고마워요.', kana: 'はなしをきいてくれてありがとう。' },
+            { ja: 'また会えてうれしいです。', ko: '또 만나서 기뻐요.', kana: 'またあえてうれしいです。' },
+            { ja: '一緒に頑張りましょう。', ko: '같이 힘내요.', kana: 'いっしょにがんばりましょう。' },
+            { ja: 'ゆっくり話しましょう。', ko: '천천히 이야기해요.', kana: 'ゆっくりはなしましょう。' },
+            { ja: 'よく知っていてうれしいです。', ko: '잘 알고 있어서 기뻐요.', kana: 'よくしっていてうれしいです。' },
+            { ja: '今日は本当にありがとう。', ko: '오늘 정말 고마워요.', kana: 'きょうはほんとうにありがとう。' },
+            { ja: 'また近いうちに会いましょう。', ko: '곧 다시 만나요.', kana: 'またちかいうちにあいましょう。' },
+            { ja: '今日は最高の時間でした。', ko: '오늘은 최고의 시간이었어요.', kana: 'きょうはさいこうのじかんでした。' },
+            { ja: 'またご連絡ください。', ko: '다음에 또 연락주세요.', kana: 'またごれんらくください。' }
+          ]
+        )
+      };
+
+      const state = {
+        activeTab: 'vocab-panel',
+        topic: 'greeting',
+        page: 0,
+        conversationPage: 0
+      };
+
+      const itemsPerPage = 5;
+      const furiganaMap = {
+        '今日': 'きょう',
+        '天気': 'てんき',
+        '駅': 'えき',
+        '学校': 'がっこう',
+        '友達': 'ともだち',
+        '明日': 'あした',
+        '家': 'いえ',
+        '会社': 'かいしゃ',
+        '人': 'ひと',
+        '時間': 'じかん',
+        '水': 'みず',
+        '大丈夫': 'だいじょうぶ',
+        '朝': 'あさ',
+        '昼': 'ひる',
+        '雨': 'あめ',
+        '電車': 'でんしゃ',
+        '駅前': 'えきまえ',
+        '映画': 'えいが',
+        '休み': 'やすみ',
+        '公園': 'こうえん',
+        '先生': 'せんせい',
+        '車': 'くるま',
+        '店': 'みせ',
+        '道': 'みち',
+        '店': 'みせ',
+        '国': 'くに',
+        '話': 'はなし',
+        '電話': 'でんわ',
+        '海': 'うみ',
+        '山': 'やま',
+        '花': 'はな',
+        '雨': 'あめ',
+        '雪': 'ゆき',
+        '春': 'はる',
+        '夏': 'なつ',
+        '秋': 'あき',
+        '冬': 'ふゆ',
+        '気持ち': 'きもち',
+        '勉強': 'べんきょう',
+        '病院': 'びょういん',
+        '便利': 'べんり',
+        '仕事': 'しごと',
+        '駅': 'えき',
+        '親切': 'しんせつ',
+        '問題': 'もんだい',
+        '結果': 'けっか',
+        '音': 'おと',
+        '手': 'て',
+        '心配': 'しんぱい',
+        '一日': 'いちにち',
+        '早起き': 'はやおき',
+        '食事': 'しょくじ',
+        '料理': 'りょうり',
+        '野菜': 'やさい',
+        '日': 'ひ',
+        '来る': 'くる',
+        '行く': 'いく',
+        '食べる': 'たべる',
+        '聞く': 'きく',
+        '話す': 'はなす',
+        '買う': 'かう',
+        '歩く': 'あるく',
+        '忘れる': 'わすれる',
+        '笑う': 'わらう',
+        '泣く': 'なく',
+        '嬉しい': 'うれしい',
+        '悲しい': 'かなしい',
+        '眠い': 'ねむい',
+        '元気': 'げんき',
+        '大きい': 'おおきい',
+        '小さい': 'ちいさい',
+        '高い': 'たかい',
+        '安い': 'やすい',
+        '近い': 'ちかい',
+        '遠い': 'とおい',
+        '速い': 'はやい',
+        '遅い': 'おそい',
+        '簡単': 'かんたん',
+        '難しい': 'むずかしい',
+        '新しい': 'あたらしい',
+        '古い': 'ふるい',
+        '美しい': 'うつくしい',
+        '静か': 'しずか',
+        '明るい': 'あかるい',
+        '暗い': 'くらい',
+        'きれい': 'きれい',
+        '忙しい': 'いそがしい',
+        '楽しい': 'たのしい',
+        '面白い': 'おもしろい',
+        '安心': 'あんしん',
+        '驚く': 'おどろく',
+        '期待': 'きたい',
+        '夢': 'ゆめ',
+        '空': 'そら'
+      };
+
+      function resolveWordKana(word) {
+        if (!word) return '';
+        if (hiraganaLookup[word]) return hiraganaLookup[word];
+        return word;
+      }
+
+      function renderSentenceWithFurigana(sentence) {
+        const patterns = Object.keys(furiganaMap)
+          .filter((word) => sentence.includes(word))
+          .sort((a, b) => b.length - a.length);
+
+        let rendered = sentence;
+        patterns.forEach((word) => {
+          const kana = furiganaMap[word];
+          if (!kana) return;
+          rendered = rendered.split(word).join(`<ruby><rb>${word}</rb><rt>${kana}</rt></ruby>`);
+        });
+
+        return rendered;
+      }
+
+      const wordList = document.getElementById('wordList');
+      const learnedCount = document.getElementById('learnedCount');
+      const topicList = document.getElementById('topicList');
+      const chatBox = document.getElementById('chatBox');
+      const userInput = document.getElementById('userInput');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const prevPageBtn = document.getElementById('prevPageBtn');
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      const conversationPageIndicator = document.getElementById('conversationPageIndicator');
+      const conversationPrevBtn = document.getElementById('conversationPrevBtn');
+      const conversationNextBtn = document.getElementById('conversationNextBtn');
+
+      function renderWords() {
+        const totalPages = Math.max(1, Math.ceil(vocabulary.length / itemsPerPage));
+        state.page = Math.min(state.page, totalPages - 1);
+
+        const pageItems = vocabulary.slice(state.page * itemsPerPage, (state.page + 1) * itemsPerPage);
+        wordList.innerHTML = pageItems.map((item, index) => {
+          const absoluteIndex = state.page * itemsPerPage + index;
+          const exampleEntries = [];
+          const rawExamples = [
+            { ja: item.example, ko: item.exampleKo },
+            { ja: item.example2, ko: item.exampleKo2 || item.exampleKo }
+          ];
+
+          rawExamples.forEach((entry) => {
+            if (!entry.ja) return;
+            const alreadyExists = exampleEntries.some((existing) => normalizeExample(existing.ja) === normalizeExample(entry.ja));
+            if (!alreadyExists) {
+              exampleEntries.push(entry);
+            }
+          });
+
+          const fallbackPool = exampleFallbackLibrary[item.category] || exampleFallbackLibrary.default;
+          fallbackPool.forEach((candidate) => {
+            if (exampleEntries.length >= 2) return;
+            const alreadyExists = exampleEntries.some((existing) => normalizeExample(existing.ja) === normalizeExample(candidate.ja));
+            if (!alreadyExists) {
+              exampleEntries.push({ ja: candidate.ja, ko: candidate.ko });
+            }
+          });
+
+          if (exampleEntries.length < 2) {
+            const fallbackSentence = `この場面では${item.word}がとても役立ちます。`;
+            const fallbackKo = `${item.meaning}이 이 상황에서 매우 유용합니다.`;
+            if (!exampleEntries.some((entry) => normalizeExample(entry.ja) === normalizeExample(fallbackSentence))) {
+              exampleEntries.push({ ja: fallbackSentence, ko: fallbackKo });
+            }
+          }
+
+          return `
+            <article class="word-card">
+              <div class="card-top">
+                <div class="word-title-group">
+                  <div class="japanese">
+                    <strong>${item.word}</strong>
+                    <span class="kana">${item.kana || item.word}</span>
+                    <span class="romaji">${item.romaji}</span>
+                  </div>
+                  <button class="small-btn" data-index="${absoluteIndex}" aria-label="발음 듣기">🔊</button>
+                </div>
+                <span class="meta">${item.category}</span>
+              </div>
+              <div class="meaning">${item.meaning}</div>
+              <div class="example-list">
+                ${exampleEntries.slice(0, 2).map((entry) => `
+                  <div class="example">
+                    <div class="example-text">
+                      例: ${renderSentenceWithFurigana(entry.ja)}
+                      <span class="example-translation">뜻: ${entry.ko || '해석 준비 중'}</span>
+                    </div>
+                    <button class="example-btn" data-example="${entry.ja}" aria-label="예문 발음 듣기">🔊</button>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="card-actions">
+                <button class="favorite" aria-label="favorite">⭐</button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        learnedCount.textContent = vocabulary.length;
+        pageIndicator.textContent = `${state.page + 1} / ${totalPages}`;
+        prevPageBtn.disabled = state.page === 0;
+        nextPageBtn.disabled = state.page >= totalPages - 1;
+
+        document.querySelectorAll('.small-btn').forEach((button) => {
+          button.addEventListener('click', () => {
+            const idx = Number(button.dataset.index);
+            speak(vocabulary[idx].word);
+          });
+        });
+
+        document.querySelectorAll('.example-btn').forEach((button) => {
+          button.addEventListener('click', () => {
+            const sentence = button.dataset.example;
+            if (sentence) speak(sentence);
+          });
+        });
+      }
+
+      function changePage(direction) {
+        const totalPages = Math.max(1, Math.ceil(vocabulary.length / itemsPerPage));
+        state.page = Math.max(0, Math.min(totalPages - 1, state.page + direction));
+        renderWords();
+      }
+
+      function speak(text) {
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'ja-JP';
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utterance);
+        }
+      }
+
+      function renderTopics() {
+        const topics = Object.keys(conversationTopics);
+        topicList.innerHTML = topics.map((key) => `
+          <button class="topic-btn ${state.topic === key ? 'active' : ''}" data-topic="${key}">${labelForTopic(key)}</button>
+        `).join('');
+
+        topicList.querySelectorAll('.topic-btn').forEach((button) => {
+          button.addEventListener('click', () => {
+            state.topic = button.dataset.topic;
+            state.conversationPage = 0;
+            renderTopics();
+            renderChat();
+          });
+        });
+      }
+
+      function labelForTopic(key) {
+        if (key === 'talk') return '대화 요청';
+        if (key === 'greeting') return '인사';
+        if (key === 'travel') return '여행';
+        if (key === 'food') return '음식';
+        if (key === 'daily') return '일상';
+        if (key === 'shopping') return '쇼핑';
+        if (key === 'hospital') return '병원';
+        if (key === 'work') return '업무';
+        return '사회';
+      }
+
+      function renderChat() {
+        const items = conversationTopics[state.topic];
+        const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
+        state.conversationPage = Math.min(state.conversationPage, totalPages - 1);
+
+        const pageItems = items.slice(
+          state.conversationPage * itemsPerPage,
+          (state.conversationPage + 1) * itemsPerPage
+        );
+
+        chatBox.innerHTML = pageItems.map((item, index) => `
+          <div class="bubble ai">
+            <div class="chat-line">
+              <div class="chat-text">
+                <span class="ja-line">${state.conversationPage * itemsPerPage + index + 1}. ${item.ja}</span>
+                <span class="ja-kana">${item.kana || item.ja}</span>
+                <small>${item.ko}</small>
+              </div>
+              <button class="speak-btn" data-text="${item.ja}" aria-label="회화 문장 발음 듣기">🔊</button>
+            </div>
+          </div>
+        `).join('');
+
+        conversationPageIndicator.textContent = `${state.conversationPage + 1} / ${totalPages}`;
+        conversationPrevBtn.disabled = state.conversationPage === 0;
+        conversationNextBtn.disabled = state.conversationPage >= totalPages - 1;
+
+        attachSpeechButtons();
+      }
+
+      function changeConversationPage(direction) {
+        const items = conversationTopics[state.topic];
+        const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
+        state.conversationPage = Math.max(0, Math.min(totalPages - 1, state.conversationPage + direction));
+        renderChat();
+      }
+
+      function attachSpeechButtons() {
+        chatBox.querySelectorAll('.speak-btn').forEach((button) => {
+          button.addEventListener('click', () => {
+            const text = button.dataset.text;
+            if (text) speak(text);
+          });
+        });
+      }
+
+      function addUserMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble user';
+
+        const line = document.createElement('div');
+        line.className = 'chat-line';
+
+        const textNode = document.createElement('div');
+        textNode.className = 'chat-text';
+        textNode.textContent = text;
+
+        const speakButton = document.createElement('button');
+        speakButton.className = 'speak-btn';
+        speakButton.type = 'button';
+        speakButton.dataset.text = text;
+        speakButton.setAttribute('aria-label', '내 문장 발음 듣기');
+        speakButton.textContent = '🔊';
+
+        line.appendChild(textNode);
+        line.appendChild(speakButton);
+        bubble.appendChild(line);
+        chatBox.appendChild(bubble);
+
+        const response = generateReply(text);
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'bubble ai';
+
+        const aiLine = document.createElement('div');
+        aiLine.className = 'chat-line';
+
+        const responseText = document.createElement('div');
+        responseText.className = 'chat-text';
+        responseText.textContent = response;
+
+        const aiSpeakButton = document.createElement('button');
+        aiSpeakButton.className = 'speak-btn';
+        aiSpeakButton.type = 'button';
+        aiSpeakButton.dataset.text = response;
+        aiSpeakButton.setAttribute('aria-label', '답변 발음 듣기');
+        aiSpeakButton.textContent = '🔊';
+
+        aiLine.appendChild(responseText);
+        aiLine.appendChild(aiSpeakButton);
+        aiBubble.appendChild(aiLine);
+        chatBox.appendChild(aiBubble);
+
+        [speakButton, aiSpeakButton].forEach((button) => {
+          button.addEventListener('click', () => {
+            if (button.dataset.text) speak(button.dataset.text);
+          });
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+        userInput.value = '';
+      }
+
+      function generateReply(input) {
+        const lowered = input.toLowerCase();
+        if (lowered.includes('안녕하세요') || lowered.includes('hello') || lowered.includes('こんにちは')) {
+          return 'こんにちは！元気ですか？';
+        }
+        if (lowered.includes('감사') || lowered.includes('ありがとう')) {
+          return 'いいえ、どういたしまして！';
+        }
+        if (lowered.includes('어디') || lowered.includes('どこ')) {
+          return '駅や店の場所を聞くときによく使います。';
+        }
+        if (lowered.includes('음식') || lowered.includes('食べ')) {
+          return '何を食べたいですか？おすすめを話してみましょう。';
+        }
+        return 'いい表現ですね。もう少しゆっくり、例文を使って話してみましょう。';
+      }
+
+      document.querySelectorAll('.tab').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = button.dataset.panel;
+          state.activeTab = panel;
+          document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab === button));
+          document.querySelectorAll('.nav-btn').forEach((nav) => nav.classList.toggle('active', nav.dataset.panel === panel));
+          document.querySelectorAll('.panel').forEach((item) => item.classList.toggle('active', item.id === panel));
+        });
+      });
+
+      document.querySelectorAll('.nav-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = button.dataset.panel;
+          state.activeTab = panel;
+          document.querySelectorAll('.nav-btn').forEach((nav) => nav.classList.toggle('active', nav === button));
+          document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.panel === panel));
+          document.querySelectorAll('.panel').forEach((item) => item.classList.toggle('active', item.id === panel));
+        });
+      });
+
+      prevPageBtn.addEventListener('click', () => changePage(-1));
+      nextPageBtn.addEventListener('click', () => changePage(1));
+      conversationPrevBtn.addEventListener('click', () => changeConversationPage(-1));
+      conversationNextBtn.addEventListener('click', () => changeConversationPage(1));
+      document.getElementById('sendBtn').addEventListener('click', addUserMessage);
+      userInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') addUserMessage();
+      });
+
+      renderWords();
+      renderTopics();
+      renderChat();
+    </script>
+  </body>
+</html>
